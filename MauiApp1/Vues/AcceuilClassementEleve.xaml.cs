@@ -12,8 +12,6 @@ namespace AP1.Vues;
 public partial class AcceuilClassementEleve : ContentPage
 {
     private readonly Apis Apis = new Apis();
-
-    public ObservableCollection
     public AcceuilClassementEleve()
 	{
         InitializeComponent();
