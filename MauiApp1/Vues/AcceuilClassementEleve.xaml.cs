@@ -9,17 +9,17 @@ using System.Collections.ObjectModel;
 
 namespace AP1.Vues;
 
-public partial class AcceuilClassementEleve : ContentPage
-{
-    private readonly Apis Apis = new Apis();
+//public partial class AcceuilClassementEleve : ContentPage
+//{
+  //  private readonly Apis Apis = new Apis();
 
-    public ObservableCollection
-    public AcceuilClassementEleve()
-	{
-        InitializeComponent();
-	}
-    private async void OnRetourClicked(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new AcceuilEleve());
-    }
-}
+//    public ObservableCollection
+  //  public AcceuilClassementEleve()
+//	{
+  //      InitializeComponent();
+//	}
+  //  private async void OnRetourClicked(object sender, EventArgs e)
+    //{
+      //  await Navigation.PushAsync(new AcceuilEleve());
+    //}
+//}

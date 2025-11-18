@@ -9,12 +9,12 @@ using MauiApp1.Vues;
 
 namespace AP1.Vues;
 
-public partial class HomePage : ContentPage
+public partial class AccueilProfesseur : ContentPage
 {
     private readonly Apis Apis = new Apis();
     private ObservableCollection<Competition> _competitions = new ObservableCollection<Competition>();
 
-    public HomePage()
+    public AccueilProfesseur()
     {
         InitializeComponent();
         NewTournamentButton.Clicked += OnNewTournamentClicked;

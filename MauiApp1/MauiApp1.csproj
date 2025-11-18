@@ -81,7 +81,7 @@
 	  <MauiXaml Update="Vues\AccueilInfoEleve.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Vues\HomePage.xaml">
+	  <MauiXaml Update="Vues\AccueilProfesseur.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Vues\ForgotPassword.xaml">
