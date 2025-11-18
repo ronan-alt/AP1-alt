@@ -8,6 +8,7 @@ namespace AP1.Modeles
     public class User
     {
         #region propriete (champs privés d'origine)
+        private int _score;
         private int _id;
         private string _nom;
         private string _prenom;
@@ -24,13 +25,13 @@ namespace AP1.Modeles
         #region constructeurs d'origine
 
 
-        public User(string email, string password, string nom, string prenom) // register
+        public User(string email, string password, string nom, string prenom, Equipe lequipe) // register
         {
             _email = email;
             _password = password;
             _nom = nom;
             _prenom = prenom;
-            _laEquipe = new Equipe();
+            _laEquipe = lequipe;
             _apis = new Apis();
             _roles = new List<string>();
             _userIdentifier = string.Empty;
@@ -41,6 +42,12 @@ namespace AP1.Modeles
             _password = password;
             Equipe equipe = new Equipe();
 
+        }
+        public User(string email, int id, Equipe lequipe) // equipes
+        {
+            _email = email;
+            _id = id;
+            _laEquipe = lequipe;
         }
         #endregion
 
@@ -85,7 +92,7 @@ namespace AP1.Modeles
 
         [JsonProperty("statut")]
         public bool Statut { get => _statut; set => _statut = value; }
-
+        [JsonProperty("latEquipe")]
         public Equipe LaEquipe { get => _laEquipe; set => _laEquipe = value; }
         public Apis Apis { get => _apis; set => _apis = value; }
 

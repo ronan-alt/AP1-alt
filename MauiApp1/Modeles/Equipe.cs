@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,20 +20,21 @@ namespace AP1.Modeles
 
         #endregion
         #region constructeur
-        public Equipe(int id,string nomEquipe)
+        public Equipe(int id)
         {
-           _id = id;
-              _nomEquipe = nomEquipe;
-              _lesUsers = new List<User>();
+            _id = id;
         }
         public Equipe()
         {
         }
         #endregion
         #region getter/setter
+        [JsonProperty("id")]
         public int Id { get => _id; set => _id = value; }
         public int Nbplaces { get => _nbplaces; set => _nbplaces = value; }
+        [JsonProperty("nom")]
         public string NomEquipe { get => _nomEquipe; set => _nomEquipe = value; }
+        [JsonProperty("lesUsers")]
         public List<User> LesUsers { get => _lesUsers; set => _lesUsers = value; }
         public User LeCapitaine { get => _leCapitaine; set => _leCapitaine = value; }
         public Score LeScore { get => _leScore; set => _leScore = value; }
