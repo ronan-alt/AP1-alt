@@ -32,15 +32,22 @@ public partial class LoginPage : ContentPage
         {
             User u1 = new User(email, password);
             var BB = await Apis.GetOneAsync("api/mobile/user", u1);
-            if (BB.Email==null)
+            if (BB.Email == null)
             {
                 await DisplayAlert("Erreur", "email ou mot de passe incorrect.", "OK");
                 await Navigation.PushAsync(new LoginPage());
             }
             else
             {
-                Utilisateur.utilisateur = BB;
-                await Navigation.PushAsync(new AcceuilEleve());
+                if (BB.UserIdentifier == "ROLE_USER")
+                {
+                    Utilisateur.utilisateur = BB;
+                    await Navigation.PushAsync(new AcceuilEleve());
+                }
+                else
+                {
+                    await Navigation.PushAsync(new AcceuilEleve());
+                }
             }
 
         }

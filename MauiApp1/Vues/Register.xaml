@@ -98,6 +98,10 @@
                        IsPassword="True"
                        ClearButtonVisibility="WhileEditing" />
             </Frame>
+            <!-- Champ Equipe -->
+            <Label Text="Sélectionne une équipe existante :" FontAttributes="Bold"/>
+            <Picker x:Name="TeamsPicker" Title="Choisir une équipe"/>
+
 
             <!-- Bouton Confirmer -->
             <Button x:Name="RegisterButton"
