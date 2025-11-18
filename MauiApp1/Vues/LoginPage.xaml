@@ -1,0 +1,106 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.LoginPage"
+             BackgroundColor="#F8F9FA">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30"
+                             Spacing="25"
+                             VerticalOptions="Center">
+
+            <!-- Titre principal -->
+            <Label Text="Connexion"
+                   FontSize="30"
+                   FontAttributes="Bold"
+                   FontFamily="Sans-Serif"
+                   TextColor="#2C3E50"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,20" />
+
+            <!-- Champ Email -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Adresse e-mail"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       Keyboard="Email"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Champ Mot de passe -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Mot de passe"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       IsPassword="True"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Bouton Connexion -->
+            <Button x:Name="LoginButton"
+                    Text="Se connecter"
+                    BackgroundColor="#2C3E50"
+                    TextColor="#F8F9FA"
+                    FontFamily="Sans-Serif"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="55"
+                    Clicked="OnLoginClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=5}" />
+
+            <!-- Lien : mot de passe oublié -->
+            <Button Text="Mot de passe oublié ?"
+                    FontFamily="Sans-Serif"
+                    FontSize="14"
+                    TextColor="#2C3E50"
+                    BackgroundColor="Transparent"
+                    Clicked="OnForgotPasswordClicked"
+                    HorizontalOptions="Center" />
+
+            <!-- Séparateur visuel -->
+            <BoxView HeightRequest="1"
+                     BackgroundColor="#BDC3C7"
+                     WidthRequest="200"
+                     HorizontalOptions="Center"
+                     Margin="0,10" />
+
+            <!-- Lien : créer un compte -->
+            <Button Text="Créer un compte"
+                    FontFamily="Sans-Serif"
+                    FontSize="14"
+                    FontAttributes="Bold"
+                    TextColor="#2C3E50"
+                    BackgroundColor="Transparent"
+                    Clicked="OnRegisterClicked"
+                    HorizontalOptions="Center" />
+
+            <!-- Label de message d’erreur -->
+            <Label x:Name="ErrorLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   FontFamily="Sans-Serif"
+                   IsVisible="False"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,0" />
+
+            <!-- Indicateur de chargement -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="#2C3E50"
+                               HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

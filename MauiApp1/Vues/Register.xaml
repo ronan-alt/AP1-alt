@@ -1,0 +1,132 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.Register"
+             BackgroundColor="#F8F9FA">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30"
+                             Spacing="25"
+                             VerticalOptions="Center">
+
+            <!-- Bouton Retour -->
+            <Button Text="← Retour"
+                    FontAttributes="Bold"
+                    FontFamily="Sans-Serif"
+                    BackgroundColor="Transparent"
+                    TextColor="#2C3E50"
+                    HorizontalOptions="Start"
+                    Clicked="OnBackClicked" />
+
+            <!-- Titre principal -->
+            <Label Text="Créer un compte"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   FontFamily="Sans-Serif"
+                   TextColor="#2C3E50"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,20" />
+
+            <!-- Champ Nom -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="NameEntry"
+                       Placeholder="Nom complet"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Champ Prénom -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="PrenomEntry"
+                       Placeholder="Prénom"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Champ Email -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="EmailEntry"
+                       Placeholder="Adresse e-mail"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       Keyboard="Email"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Champ Mot de passe -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="PasswordEntry"
+                       Placeholder="Mot de passe"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       IsPassword="True"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Champ Confirmation -->
+            <Frame BackgroundColor="#BDC3C7"
+                   CornerRadius="10"
+                   HasShadow="False"
+                   Padding="10,0">
+                <Entry x:Name="ConfirmPasswordEntry"
+                       Placeholder="Confirmer le mot de passe"
+                       FontFamily="Sans-Serif"
+                       TextColor="#2C3E50"
+                       PlaceholderColor="#7F8C8D"
+                       BackgroundColor="Transparent"
+                       IsPassword="True"
+                       ClearButtonVisibility="WhileEditing" />
+            </Frame>
+
+            <!-- Bouton Confirmer -->
+            <Button x:Name="RegisterButton"
+                    Text="Créer mon compte"
+                    BackgroundColor="#2C3E50"
+                    TextColor="#F8F9FA"
+                    FontFamily="Sans-Serif"
+                    FontAttributes="Bold"
+                    CornerRadius="12"
+                    HeightRequest="55"
+                    Clicked="OnRegisterClicked"
+                    Shadow="{Shadow Brush=Black, Opacity=0.3, Radius=5}" />
+
+            <!-- Indicateur de chargement -->
+            <ActivityIndicator x:Name="LoadingIndicator"
+                               IsRunning="False"
+                               IsVisible="False"
+                               Color="#2C3E50"
+                               HorizontalOptions="Center" />
+
+            <!-- Label de message d’erreur -->
+            <Label x:Name="ErrorLabel"
+                   TextColor="Red"
+                   FontSize="14"
+                   FontFamily="Sans-Serif"
+                   IsVisible="False"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,0" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

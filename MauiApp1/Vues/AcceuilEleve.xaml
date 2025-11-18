@@ -1,0 +1,100 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.AcceuilEleve"
+             BackgroundColor="#F8F9FA">
+
+    <VerticalStackLayout Spacing="25" Padding="20">
+
+        <!-- BARRE DU HAUT -->
+        <Grid BackgroundColor="#2C3E50"
+              Padding="15"
+              ColumnDefinitions="Auto,*,Auto,Auto"
+              VerticalOptions="Start">
+
+            <Label Text="🏆 Mon Équipe"
+                   TextColor="White"
+                   FontSize="22"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"
+                   Grid.Column="0" />
+
+            <Button Text="Infos"
+                    BackgroundColor="#34495E"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Clicked="OnInfosClicked"
+                    Grid.Column="2"
+                    HorizontalOptions="End"
+                    Margin="0,0,10,0"/>
+
+            <Button Text="Classement"
+                    BackgroundColor="#34495E"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Clicked="OnClassementClicked"
+                    Grid.Column="3"
+                    HorizontalOptions="End" />
+        </Grid>
+
+        <!-- CONTENU PRINCIPAL -->
+        <ScrollView>
+            <VerticalStackLayout Spacing="20" Padding="10">
+
+                <!-- Titre -->
+                <Label Text="Effectif de l’équipe"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="#2C3E50"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,10"/>
+
+                <!-- TABLEAU DES JOUEURS -->
+                <CollectionView x:Name="PlayersCollection"
+                                ItemsSource="{Binding Joueurs}"
+                                BackgroundColor="#BDC3C7"
+                                
+                                Margin="0,10"
+                                SelectionMode="None">
+
+                    <CollectionView.Header>
+                        <Grid Padding="10"
+                              BackgroundColor="#2C3E50"
+                              ColumnDefinitions="2*,*,*">
+                            <Label Text="Joueur" TextColor="White" FontAttributes="Bold" Grid.Column="0"/>
+                            <Label Text="Poste" TextColor="White" FontAttributes="Bold" Grid.Column="1" HorizontalOptions="Center"/>
+                            <Label Text="Points" TextColor="White" FontAttributes="Bold" Grid.Column="2" HorizontalOptions="End"/>
+                        </Grid>
+                    </CollectionView.Header>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10"
+                                  ColumnDefinitions="2*,*,*"
+                                  BackgroundColor="White"
+                                  Margin="0,1,0,0">
+                                <Label Text="{Binding Nom}" TextColor="#2C3E50" Grid.Column="0"/>
+                                <Label Text="{Binding Poste}" TextColor="#2C3E50" Grid.Column="1" HorizontalOptions="Center"/>
+                                <Label Text="{Binding Points}" TextColor="#0077CC" Grid.Column="2" HorizontalOptions="End"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- TOTAL POINTS -->
+                <Label x:Name="TotalPointsLabel"
+                       Text="Total des points : 0"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#0077CC"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,0"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,34 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.AccueilInfoEleve"
+             BackgroundColor="#F5F5F5">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+        <Label Text="Informations de l'utilisateur"
+               FontSize="24"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
+        <Frame Padding="15" BackgroundColor="#f0f0f0" CornerRadius="10">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Nom :" FontAttributes="Bold" />
+                <Label x:Name="NomLabel" FontSize="18" />
+
+                <Label Text="Prénom :" FontAttributes="Bold" />
+                <Label x:Name="PrenomLabel" FontSize="18" />
+
+                <Label Text="Email :" FontAttributes="Bold" />
+                <Label x:Name="EmailLabel" FontSize="18" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <!-- Bouton retour -->
+        <Button Text="← Retour"
+                FontAttributes="Bold"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                CornerRadius="10"
+                HeightRequest="45"
+                Clicked="OnRetourClicked"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.HomePage"
+             BackgroundColor="#F8F9FA"
+             Title="Course aux Salles - Interface Professeur">
+
+    <Grid RowDefinitions="Auto,*" ColumnDefinitions="*">
+        <!-- Header -->
+        <Grid BackgroundColor="#BDC3C7" Padding="16" Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <VerticalStackLayout Spacing="2">
+                <Label Text="Course aux Salles" TextColor="#2C3E50" FontSize="22" FontAttributes="Bold"/>
+                <Label Text="Interface Professeur" TextColor="#2C3E50" Opacity="0.75" FontSize="14"/>
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Content -->
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16" Spacing="16">
+
+                <!-- Dashboard cards -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                    <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10">
+                        <VerticalStackLayout>
+                            <Label Text="Equipes" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="TeamsCountLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10" Grid.Column="1">
+                        <VerticalStackLayout>
+                            <Label Text="Élèves" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="StudentsCountLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                    <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10" Grid.Column="2">
+                        <VerticalStackLayout>
+                            <Label Text="Tournois actifs" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="ActiveTournamentsLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </Grid>
+
+                <!-- Actions rapides -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Button x:Name="NewTournamentButton" Text="Nouveau tournoi" BackgroundColor="#2C3E50" TextColor="#F8F9FA" CornerRadius="12" HeightRequest="50"/>
+
+                    <Button x:Name="ManageTeamsButton" Grid.Column="1" Text="Gérer compétition" BackgroundColor="#2C3E50" TextColor="#F8F9FA" CornerRadius="12" HeightRequest="50"/>
+                </Grid>
+
+                <!-- Liste des tournois -->
+                <Label Text="Liste des tournois" TextColor="#2C3E50" FontSize="18" FontAttributes="Bold"/>
+                <ActivityIndicator x:Name="LoadingIndicator" Color="#2C3E50" IsVisible="False" IsRunning="False"/>
+                <Label x:Name="ErrorLabel" TextColor="#C0392B" IsVisible="False"/>
+
+                <CollectionView x:Name="CompetitionsCollection" SelectionMode="Single" SelectionChanged="OnCompetitionSelected">
+                    <CollectionView.EmptyView>
+                        <Label Text="Aucun tournoi" TextColor="#2C3E50" HorizontalOptions="Center" />
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="#FFFFFF" Padding="12" HasShadow="True" CornerRadius="10" Margin="0,0,0,10" BorderColor="#BDC3C7">
+                                <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
+                                    <Label Grid.RowSpan="3" Text="#" TextColor="#7F8C8D"/>
+                                    <Label Grid.Column="1" Text="{Binding Nom}" TextColor="#2C3E50" FontAttributes="Bold"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="Début : {Binding DateDeb}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="Fin : {Binding DateFin}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
+                                    <Button Grid.RowSpan="3" Grid.Column="2"
+                                            Text="Supprimer"
+                                            BackgroundColor="#C0392B"
+                                            TextColor="#F8F9FA"
+                                            CornerRadius="10"
+                                            HeightRequest="36"
+                                            Clicked="OnDeleteCompetitionClicked"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
+
+

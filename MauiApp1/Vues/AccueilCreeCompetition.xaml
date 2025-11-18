@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Vues.AccueilCreeCompetition"
+             Title="Créer une compétition"
+             BackgroundColor="#F8F9FA">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Retour" Priority="0" Order="Primary" Clicked="OnBackClicked" />
+    </ContentPage.ToolbarItems>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="16">
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label />
+                <Button Grid.Column="1"
+                        Text="Accueil"
+                        BackgroundColor="#2C3E50"
+                        TextColor="#F8F9FA"
+                        CornerRadius="12"
+                        HeightRequest="40"
+                        Clicked="OnGoHomeClicked"/>
+            </Grid>
+
+            <Frame Padding="16" BorderColor="#BDC3C7" BackgroundColor="#BDC3C7" HasShadow="False" CornerRadius="10">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Informations de la compétition" FontSize="20" FontAttributes="Bold" TextColor="#2C3E50"/>
+
+                    <Entry x:Name="CompetitionNameEntry"
+                           Placeholder="Nom de la compétition"
+                           ClearButtonVisibility="WhileEditing" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Début" TextColor="#2C3E50"/>
+                            <DatePicker x:Name="StartDatePicker" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6">
+                            <Label Text="Fin" TextColor="#2C3E50"/>
+                            <DatePicker x:Name="EndDatePicker" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Entry x:Name="LocationEntry"
+                           Placeholder="Lieu (optionnel)"
+                           ClearButtonVisibility="WhileEditing" />
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <VerticalStackLayout Grid.Column="0" Spacing="6">
+                            <Label Text="Statut" TextColor="#2C3E50"/>
+                            <Picker x:Name="StatusPicker">
+                                <Picker.Items>
+                                    <x:String>Brouillon</x:String>
+                                    <x:String>Active</x:String>
+                                </Picker.Items>
+                            </Picker>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="End">
+                            <Label Text="Inscriptions ouvertes" TextColor="#2C3E50"/>
+                            <Switch x:Name="RegistrationSwitch" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button x:Name="CreateButton"
+                                Text="Créer"
+                                Grid.Column="0"
+                                BackgroundColor="#2C3E50"
+                                TextColor="#F8F9FA"
+                                CornerRadius="12"
+                                HeightRequest="48"
+                                Clicked="OnCreateClicked"/>
+                        <Button x:Name="CancelButton"
+                                Text="Annuler"
+                                Grid.Column="1"
+                                BackgroundColor="#2C3E50"
+                                TextColor="#F8F9FA"
+                                CornerRadius="12"
+                                HeightRequest="48"
+                                Clicked="OnCancelClicked"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <ActivityIndicator x:Name="LoadingIndicator" IsVisible="False" IsRunning="False" Color="#2C3E50"/>
+            <Label x:Name="ErrorLabel" IsVisible="False" TextColor="#C0392B" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
