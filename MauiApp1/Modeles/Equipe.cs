@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace AP1.Modeles
-{
+{   
+   
     public class Equipe
     {
         #region propriete
@@ -16,16 +17,22 @@ namespace AP1.Modeles
         private string _nomEquipe;
         private List<User> _lesUsers;
         private User _leCapitaine;
-        private Score _leScore;
+        private int _score;
 
         #endregion
         #region constructeur
+        public Equipe()
+        {
+        }
         public Equipe(int id)
         {
             _id = id;
         }
-        public Equipe()
+        public Equipe(int id, string nomEquipe, int score) //Classement eleve
         {
+            _id = id;
+            _nomEquipe = nomEquipe;
+            _score = score;
         }
         #endregion
         #region getter/setter
@@ -37,7 +44,9 @@ namespace AP1.Modeles
         [JsonProperty("lesUsers")]
         public List<User> LesUsers { get => _lesUsers; set => _lesUsers = value; }
         public User LeCapitaine { get => _leCapitaine; set => _leCapitaine = value; }
-        public Score LeScore { get => _leScore; set => _leScore = value; }
+        [JsonProperty("score")]
+        public int Score { get => _score; set => _score = value; }
+
         #endregion
         #region methode
         #endregion

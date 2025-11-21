@@ -2,70 +2,86 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AP1.Vues.AcceuilClassementEleve"
-             Title="Classement en longueur"
-             BackgroundColor="#F5F5F5">
+             BackgroundColor="#F8F9FA">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="20">
 
-            <!-- Titre -->
-            <Label Text="Classement en Longueur"
+            <!-- TITRE -->
+            <Label Text="Classement des équipes"
                    FontSize="28"
                    FontAttributes="Bold"
                    HorizontalOptions="Center"
                    TextColor="#1E1E1E"
                    Margin="0,20,0,10" />
 
-            <!-- Liste des classements -->
+            <!-- COLLECTION VIEW -->
             <CollectionView x:Name="ClassementCollectionView"
-                            ItemsSource="{Binding ClassementList}">
+                            SelectionMode="None">
+
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
+
                         <Frame CornerRadius="15"
                                HasShadow="True"
                                BackgroundColor="White"
                                Padding="15"
                                Margin="0,5">
+
                             <Grid ColumnDefinitions="auto, *, auto"
                                   VerticalOptions="Center">
 
-                                <!-- Rang -->
+                                <!-- RANG -->
                                 <Label Text="{Binding Rang}"
                                        FontAttributes="Bold"
-                                       FontSize="22"
+                                       FontSize="26"
                                        TextColor="#0078D7"
                                        VerticalOptions="Center"
                                        Margin="5,0" />
 
-                                <!-- Distance -->
-                                <Label Grid.Column="2"
+                                <!-- NOM ÉQUIPE -->
+                                <Label Grid.Column="1"
+                                       Text="{Binding NomEquipe}"
                                        FontAttributes="Bold"
                                        FontSize="18"
                                        TextColor="#333"
                                        VerticalOptions="Center"
-                                       Margin="10,0">
+                                       Margin="15,0" />
+
+                                <!-- SCORE -->
+                                <Label Grid.Column="2"
+                                       FontAttributes="Bold"
+                                       FontSize="20"
+                                       TextColor="#222"
+                                       VerticalOptions="Center">
+
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="{Binding Distance}" />
-                                            <Span Text=" m" />
+                                            <Span Text="{Binding Score}" />
+                                            <Span Text=" pts" />
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
 
                             </Grid>
+
                         </Frame>
+
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
+
             </CollectionView>
 
-            <!-- Bouton retour -->
-            <Button Text="Retour a l'accueil"
+            <!-- BOUTON RETOUR -->
+            <Button Text="Retour à l'accueil"
                     BackgroundColor="#0078D7"
                     TextColor="White"
                     FontAttributes="Bold"
                     CornerRadius="12"
-                    Clicked="OnRetourClicked" />
+                    Clicked="OnRetourClicked"
+                    Margin="0,20" />
 
         </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>
