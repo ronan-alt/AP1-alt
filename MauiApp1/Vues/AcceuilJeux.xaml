@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AP1.Vues.AccueilJeux"
+             BackgroundColor="#F5F5F5"
+             Title="Salle d'attente">
+
+    <Grid RowDefinitions="Auto, *, Auto" Padding="20">
+
+        <Button Grid.Row="0"
+                Text="🏆 Voir le Classement"
+                BackgroundColor="#007AFF"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="10"
+                HeightRequest="45"
+                HorizontalOptions="End"
+                Clicked="OnClassementClicked"/>
+
+        <VerticalStackLayout Grid.Row="1" 
+                             Spacing="30" 
+                             VerticalOptions="Center" 
+                             HorizontalOptions="Center">
+
+            <Frame BackgroundColor="#f0f0f0" 
+                   CornerRadius="10" 
+                   Padding="30"
+                   HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Le jeu commence dans :"
+                           HorizontalOptions="Center"
+                           FontSize="16"
+                           TextColor="Gray"/>
+
+                    <Label x:Name="LblTimer"
+                           Text="00:00:00"
+                           FontSize="48"
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="#333333"/>
+                </VerticalStackLayout>
+            </Frame>
+
+            <Button x:Name="BtnAccederJeu"
+                    Text="🎮 Accéder au jeu"
+                    FontSize="20"
+                    FontAttributes="Bold"
+                    BackgroundColor="#007AFF"
+                    TextColor="White"
+                    CornerRadius="10"
+                    HeightRequest="60"
+                    WidthRequest="250"
+                    IsEnabled="False" 
+                    Opacity="0.5"
+                    Clicked="OnAccederJeuClicked"/>
+        </VerticalStackLayout>
+
+        <Button Grid.Row="2"
+                Text="← Retour Accueil"
+                FontAttributes="Bold"
+                BackgroundColor="Transparent"
+                TextColor="#007AFF"
+                BorderColor="#007AFF"
+                BorderWidth="1"
+                CornerRadius="10"
+                HeightRequest="45"
+                Clicked="OnRetourClicked"/>
+    </Grid>
+</ContentPage>

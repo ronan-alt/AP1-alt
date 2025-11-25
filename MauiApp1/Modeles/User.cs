@@ -27,7 +27,7 @@ namespace AP1.Modeles
 
         public User(string email, string password, string nom, string prenom, Equipe lequipe) // register
         {
-            _email = email;
+            _email = email; 
             _password = password;
             _nom = nom;
             _prenom = prenom;
@@ -48,6 +48,17 @@ namespace AP1.Modeles
             _email = email;
             _id = id;
             _laEquipe = lequipe;
+        }
+        public User(int id, string email, string userIdentifier, string nom, string prenom, bool statut, Equipe leEquipe) // infos eleve 
+        {
+            int _id = id;
+            string _email = email;
+            string _userIdentifier = userIdentifier;
+            string _nom = nom;
+            string _prenom = prenom;
+            bool _statut = statut;
+            Equipe _laEquipe = leEquipe;
+            
         }
         #endregion
 

@@ -39,15 +39,8 @@ public partial class LoginPage : ContentPage
             }
             else
             {
-                if (BB.UserIdentifier == "ROLE_USER")
-                {
                     Utilisateur.utilisateur = BB;
-                    await Navigation.PushAsync(new AcceuilEleve());
-                }
-                else
-                {
-                    await Navigation.PushAsync(new AcceuilEleve());
-                }
+                    await Navigation.PushAsync(new AcceuilEleve());   
             }
 
         }

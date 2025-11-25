@@ -1,14 +1,14 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="AP1.Vues.AcceuilEleve"
-             BackgroundColor="#F8F9FA">
+             BackgroundColor="#F8F9FA"
+             Title="Accueil Élève">
 
     <VerticalStackLayout Spacing="25" Padding="20">
 
-        <!-- BARRE DU HAUT -->
         <Grid BackgroundColor="#2C3E50"
               Padding="15"
-              ColumnDefinitions="Auto,*,Auto,Auto"
+              ColumnDefinitions="*, Auto, Auto, Auto"
               VerticalOptions="Start">
 
             <Label Text="🏆 Mon Équipe"
@@ -17,6 +17,18 @@
                    FontAttributes="Bold"
                    VerticalOptions="Center"
                    Grid.Column="0" />
+
+            <Button Text="Jouer"
+                    BackgroundColor="#007AFF"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Padding="10,5"
+                    FontAttributes="Bold"
+                    FontSize="14"
+                    Clicked="OnJouerClicked"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    Margin="0,0,10,0"/>
 
             <Button Text="Infos"
                     BackgroundColor="#34495E"
@@ -42,11 +54,17 @@
                     HorizontalOptions="End" />
         </Grid>
 
-        <!-- CONTENU PRINCIPAL -->
         <ScrollView>
             <VerticalStackLayout Spacing="20" Padding="10">
 
-                <!-- Titre -->
+                <Label x:Name="TotalPointsLabel"
+                       Text="Chargement des données de l'équipe..."
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#0077CC"
+                       HorizontalOptions="Center"
+                       Margin="0,10,0,10"/>
+
                 <Label Text="Effectif de l’équipe"
                        FontSize="26"
                        FontAttributes="Bold"
@@ -54,46 +72,47 @@
                        HorizontalOptions="Center"
                        Margin="0,10,0,10"/>
 
-                <!-- TABLEAU DES JOUEURS -->
                 <CollectionView x:Name="PlayersCollection"
-                                ItemsSource="{Binding Joueurs}"
+                                SelectionMode="None"
                                 BackgroundColor="#BDC3C7"
-                                
-                                Margin="0,10"
-                                SelectionMode="None">
+                                Margin="0,10">
 
                     <CollectionView.Header>
                         <Grid Padding="10"
                               BackgroundColor="#2C3E50"
-                              ColumnDefinitions="2*,*,*">
-                            <Label Text="Joueur" TextColor="White" FontAttributes="Bold" Grid.Column="0"/>
-                            <Label Text="Poste" TextColor="White" FontAttributes="Bold" Grid.Column="1" HorizontalOptions="Center"/>
-                            <Label Text="Points" TextColor="White" FontAttributes="Bold" Grid.Column="2" HorizontalOptions="End"/>
+                              ColumnDefinitions="2*,*">
+                            <Label Text="Nom Prénom" TextColor="White" FontAttributes="Bold" Grid.Column="0"/>
+                            <Label Text="Statut" TextColor="White" FontAttributes="Bold" Grid.Column="1" HorizontalOptions="Center"/>
                         </Grid>
                     </CollectionView.Header>
 
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="10"
-                                  ColumnDefinitions="2*,*,*"
+                                  ColumnDefinitions="2*,*" 
                                   BackgroundColor="White"
                                   Margin="0,1,0,0">
-                                <Label Text="{Binding Nom}" TextColor="#2C3E50" Grid.Column="0"/>
-                                <Label Text="{Binding Poste}" TextColor="#2C3E50" Grid.Column="1" HorizontalOptions="Center"/>
-                                <Label Text="{Binding Points}" TextColor="#0077CC" Grid.Column="2" HorizontalOptions="End"/>
+                                <Label Text="{Binding Nom, StringFormat='{0} {1}', Source={Binding .}}" 
+                                       TextColor="#2C3E50" 
+                                       Grid.Column="0"/>
+
+                                <Label Text="{Binding Statut, StringFormat='{0}'}" 
+                                       TextColor="#2C3E50" 
+                                       Grid.Column="1" 
+                                       HorizontalOptions="Center"/>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                </CollectionView>
 
-                <!-- TOTAL POINTS -->
-                <Label x:Name="TotalPointsLabel"
-                       Text="Total des points : 0"
-                       FontSize="18"
-                       FontAttributes="Bold"
-                       TextColor="#0077CC"
-                       HorizontalOptions="Center"
-                       Margin="0,10,0,0"/>
+                    <CollectionView.EmptyView>
+                        <Label Text="Aucun coéquipier trouvé."
+                               TextColor="#7F8C8D"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Padding="20"/>
+                    </CollectionView.EmptyView>
+
+                </CollectionView>
             </VerticalStackLayout>
         </ScrollView>
     </VerticalStackLayout>

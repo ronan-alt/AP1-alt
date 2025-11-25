@@ -72,6 +72,9 @@
 	  <MauiXaml Update="Vues\AcceuilEleve.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Vues\AcceuilJeux.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Vues\AccueilGererEquipe.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
