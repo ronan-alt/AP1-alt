@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using ZXing.Net.Maui.Controls; // UTILISE CE USING !
+using ZXing.Net.Maui.Controls;
 
 namespace MauiApp1
 {
@@ -10,7 +10,7 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
-                .UseBarcodeReader() // Ligne d'initialisation du scanner
+                .UseBarcodeReader()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

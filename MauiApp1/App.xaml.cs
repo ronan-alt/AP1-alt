@@ -9,7 +9,7 @@ namespace MauiApp1
         {
             InitializeComponent();
             MainPage = new NavigationPage(new LoginPage());
-        }
+        }       
 
     }
 

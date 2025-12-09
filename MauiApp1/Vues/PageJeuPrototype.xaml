@@ -1,0 +1,92 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui.Controls"
+             x:Class="AP1.Vues.PageJeuPrototype"
+             Title="Jeu de Piste - Prototype"
+             BackgroundColor="#2C3E50">
+
+    <ScrollView>
+        <Grid RowDefinitions="Auto,Auto,Auto" Padding="20">
+
+            <Grid Grid.Row="0" HeightRequest="200" Margin="0,0,0,20">
+                <Image Source="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Paris_Night.jpg/1024px-Paris_Night.jpg" 
+                       Aspect="AspectFill"
+                       x:Name="TargetImage"/>
+                <BoxView x:Name="BlurOverlay" 
+                         Color="White" 
+                         Opacity="0.95" />
+                
+                <Label Text="Lieu Mystère" 
+                       TextColor="Black"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       x:Name="MysteryLabel"/>
+            </Grid>
+
+            <VerticalStackLayout Grid.Row="1" Spacing="15" x:Name="AnswersStack">
+                <Label Text="Question 1/5" 
+                       TextColor="#ECF0F1" 
+                       FontSize="14"
+                       x:Name="ProgressLabel"/>
+
+                <Label Text="Quelle est la capitale de la France ?" 
+                       TextColor="White" 
+                       FontSize="22" 
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       x:Name="QuestionLabel"/>
+
+                <!-- Réponses -->
+                <Button Text="Londres" Clicked="OnAnswerClicked" BackgroundColor="#34495E" TextColor="White" CornerRadius="10"/>
+                <Button Text="Paris" Clicked="OnAnswerClicked" BackgroundColor="#34495E" TextColor="White" CornerRadius="10"/>
+                <Button Text="Berlin" Clicked="OnAnswerClicked" BackgroundColor="#34495E" TextColor="White" CornerRadius="10"/>
+                <Button Text="Madrid" Clicked="OnAnswerClicked" BackgroundColor="#34495E" TextColor="White" CornerRadius="10"/>
+            </VerticalStackLayout>
+
+            <!-- Zone Finale (Scan) -->
+            <VerticalStackLayout Grid.Row="2" x:Name="FinalSection" IsVisible="False" Spacing="10" Margin="0,20,0,0">
+                <Label x:Name="SuccessLabel"
+                       Text="Bravo ! Vous avez trouvé le lieu." 
+                       TextColor="#2ECC71" 
+                       FontSize="18" 
+                       HorizontalTextAlignment="Center"
+                       IsVisible="False"/>
+                
+                <Button Text="SCANNER LE QR CODE" 
+                        BackgroundColor="#E74C3C" 
+                        TextColor="White" 
+                        HeightRequest="60"
+                        FontSize="20"
+                        FontAttributes="Bold"
+                        CornerRadius="30"
+                        Clicked="OnScanClicked"/>
+            </VerticalStackLayout>
+
+        </Grid>
+    </ScrollView>
+
+    <!-- Overlay Caméra (Hors du ScrollView pour prendre tout l'écran) -->
+    <!--
+    <Grid x:Name="CameraOverlay" 
+          IsVisible="False" 
+          BackgroundColor="Black"
+          ZIndex="99">
+        
+        <zxing:CameraBarcodeReaderView x:Name="BarcodeReader"
+                                       BarcodesDetected="OnBarcodesDetected"
+                                       IsDetecting="True"
+                                       CameraLocation="Rear"
+                                       IsTorchOn="False"/>
+        
+        <Button Text="Annuler" 
+                Clicked="OnCancelScanClicked" 
+                VerticalOptions="End" 
+                HorizontalOptions="Center" 
+                Margin="0,0,0,50"
+                BackgroundColor="Red"
+                TextColor="White"/>
+    </Grid>
+    -->
+
+</ContentPage>
