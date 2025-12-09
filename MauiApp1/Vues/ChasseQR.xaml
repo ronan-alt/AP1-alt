@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.Maui.Controls"
+             x:Class="AP1.Vues.ChasseQR"
+             Title="Chasse aux QR Codes"
+             Shell.NavBarIsVisible="False">
+    <Grid>
+        <zxing:CameraBarcodeReaderView x:Name="cameraView"
+                                       BarcodesDetected="CameraView_BarcodesDetected"
+                                       IsDetecting="True"
+                                       Options="{Binding BarcodeOptions}"/>
+
+        <Grid RowDefinitions="Auto, *, Auto" Padding="20">
+
+            <Frame Grid.Row="0" BackgroundColor="#CCFFFFFF" CornerRadius="15" Padding="15">
+                <Grid ColumnDefinitions="*, Auto">
+                    <Label x:Name="LblEtape" 
+                           Text="Étape 1/5" 
+                           FontSize="18" FontAttributes="Bold" TextColor="#333"/>
+
+                    <Label x:Name="LblTimer" 
+                           Grid.Column="1"
+                           Text="00:45" 
+                           FontSize="22" FontAttributes="Bold" TextColor="#D32F2F"/>
+                </Grid>
+            </Frame>
+
+            <Border Grid.Row="1"
+                    HeightRequest="250" WidthRequest="250"
+                    BackgroundColor="Transparent"
+                    Stroke="White"            StrokeThickness="2"       HorizontalOptions="Center" VerticalOptions="Center"/>
+
+            <Frame Grid.Row="2" BackgroundColor="#EE007AFF" CornerRadius="15" Padding="20">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🔎 VOTRE MISSION :" TextColor="White" FontSize="12" FontAttributes="Bold"/>
+                    <Label x:Name="LblIndice" 
+                           Text="Rendez-vous au CDI et trouvez le livre rouge..." 
+                           TextColor="White" FontSize="18" FontAttributes="Bold" 
+                           HorizontalOptions="Center" HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <Grid x:Name="GameOverOverlay" BackgroundColor="#CC000000" IsVisible="False">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                <Label Text="TROP TARD !" TextColor="Red" FontSize="40" FontAttributes="Bold"/>
+                <Label Text="Retour à la case départ..." TextColor="White" FontSize="20"/>
+                <Button Text="Recommencer" Clicked="OnRestartClicked" BackgroundColor="White" TextColor="Red"/>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+</ContentPage>
