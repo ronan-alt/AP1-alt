@@ -1,4 +1,4 @@
-﻿using AP1.Vues;
+using AP1.Vues;
 using MauiApp1.Vues;
 
 namespace MauiApp1
@@ -8,10 +8,8 @@ namespace MauiApp1
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new AccueilProfesseur());
-        }       
-
+            MainPage = new NavigationPage(new LoginPage());
+        }
     }
 
 }
-
