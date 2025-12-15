@@ -63,6 +63,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="172.76.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="SkiaSharp" Version="3.119.1" />
 	</ItemGroup>
 
 	<ItemGroup>
