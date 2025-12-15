@@ -125,18 +125,18 @@ public partial class AccueilJeux : ContentPage
             case 1:
                 // Si l'ID est 1, on va vers la page du 1, 2, 3 Soleil
                 // On peut passer l'objet _jeuEnCours en paramètre si besoin
-                //await Navigation.PushAsync(new AP1.Vues.JEU1());
+                await Navigation.PushAsync(new AP1.Vues.ChasseQR());
                 break;
 
             case 2:
                 // Exemple pour un futur jeu
                 // await Navigation.PushAsync(new AP1.Vues.PageJeu2());
-               // await DisplayAlert("Bientôt", "Ce jeu n'est pas encore codé !", "OK");
+               await DisplayAlert("Bientôt", "Ce jeu n'est pas encore codé !", "OK");
                 break;
 
             default:
                 // Si l'ID est inconnu
-                //await DisplayAlert("Oups", $"Le jeu ID {_jeuEnCours.Id} n'est pas reconnu.", "OK");
+                await DisplayAlert("Oups", $"Le jeu ID {_jeuEnCours.Id} n'est pas reconnu.", "OK");
                 break;
         }
     }

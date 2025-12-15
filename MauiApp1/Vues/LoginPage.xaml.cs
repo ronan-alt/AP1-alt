@@ -39,8 +39,12 @@ public partial class LoginPage : ContentPage
             }
             else
             {
-                    Utilisateur.utilisateur = BB;
-                    await Navigation.PushAsync(new AcceuilEleve());   
+                Utilisateur.utilisateur = BB;
+                if (BB.EstAdmin == true)
+                {
+                    await Navigation.PushAsync(new AccueilProfesseur());
+                }
+                else { await Navigation.PushAsync(new AcceuilEleve()); } 
             }
 
         }

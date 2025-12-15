@@ -1,24 +1,27 @@
 using AP1.Modeles;
-using AP1.Services;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
+using ZXing.Net.Maui;
+using ZXing.Net.Maui.Controls;
+using ZXing;
 using MauiApp1.Modeles;
-using MauiApp1.Services;
-using MauiApp1.Vues;
+
 namespace AP1.Vues;
-using ZXing;                       // <--- CELLE-CI DOIT ÊTRE LÀ (pour BarcodeDetectionEventArgs)
-using ZXing.Net.Maui;             // <--- CELLE-CI DOIT ÊTRE LÀ (pour BarcodeReaderOptions)
-using ZXing.Net.Maui.Controls;    // <--- CELLE-CI DOIT ÊTRE LÀ (pour les Views)
 
 public partial class ChasseQR : ContentPage
 {
-    private readonly Apis Apis = new Apis();
-    private AjoutPoints ajoutspoint;
-    private List<LieuQR> _tousLesLieux; // La base de données de tous les QR possibles
-    private List<LieuQR> _parcoursActuel; // Les 5 lieux choisis pour ce joueur
-    private int _etapeEnCours = 0; // 0 à 4
+    private readonly Services.Apis Apis = new Services.Apis(); // Vérifie tes namespaces ici
 
+    private List<LieuQR> _tousLesLieux;
+    private List<LieuQR> _parcoursActuel;
+    private int _etapeEnCours = 0;
+
+    // Timer système unique
     private IDispatcherTimer _timer;
     private int _tempsRestantSec;
-    private bool _isProcessing = false; // Pour éviter de scanner 50 fois le même code en 1 seconde
+    private bool _isProcessing = false;
 
     public BarcodeReaderOptions BarcodeOptions { get; set; }
 
@@ -26,7 +29,7 @@ public partial class ChasseQR : ContentPage
     {
         InitializeComponent();
 
-        // Configurer la caméra pour ne lire que les QR Codes (plus rapide)
+        // 1. Initialisation de la caméra
         BarcodeOptions = new BarcodeReaderOptions
         {
             Formats = ZXing.Net.Maui.BarcodeFormat.QrCode,
@@ -35,14 +38,17 @@ public partial class ChasseQR : ContentPage
         };
         cameraView.Options = BarcodeOptions;
 
-        ChargerDonneesFake(); // À remplacer par ta BDD plus tard
+        // 2. Initialisation UNIQUE du Timer (C'est la correction majeure !)
+        _timer = Dispatcher.CreateTimer();
+        _timer.Interval = TimeSpan.FromSeconds(1);
+        _timer.Tick += OnTimerTick;
+
+        ChargerDonneesFake();
         DemarrerNouvellePartie();
     }
 
     private void ChargerDonneesFake()
     {
-        // Ici je simule ta base de données.
-        // Il faudra qu'il y en ait beaucoup pour que l'aléatoire fonctionne bien !
         _tousLesLieux = new List<LieuQR>
         {
             new LieuQR { CodeSecret = "CDI_REF_01", Indice = "Le silence est d'or. Cherche près des dictionnaires.", DureeSecondes = 60 },
@@ -57,36 +63,54 @@ public partial class ChasseQR : ContentPage
 
     private void DemarrerNouvellePartie()
     {
-        GameOverOverlay.IsVisible = false;
-        cameraView.IsDetecting = true;
-        _etapeEnCours = 0;
+        try
+        {
+            GameOverOverlay.IsVisible = false;
+            cameraView.IsDetecting = true;
+            _etapeEnCours = 0;
 
-        // --- MAGIE DE L'ALÉATOIRE ---
-        // On mélange la liste et on en prend 5
-        var random = new Random();
-        _parcoursActuel = _tousLesLieux.OrderBy(x => random.Next()).Take(5).ToList();
+            var random = new Random();
+            _parcoursActuel = _tousLesLieux.OrderBy(x => random.Next()).Take(5).ToList();
 
-        LancerEtape();
+            LancerEtape();
+        }
+        catch (Exception ex)
+        {
+            DisplayAlert("Erreur", "Impossible de démarrer la partie : " + ex.Message, "OK");
+        }
     }
 
     private void LancerEtape()
     {
-        var lieu = _parcoursActuel[_etapeEnCours];
+        try
+        {
+            // Sécurité : Vérifier qu'on ne sort pas de la liste
+            if (_etapeEnCours >= _parcoursActuel.Count) return;
 
-        // Mise à jour UI
-        LblEtape.Text = $"Étape {_etapeEnCours + 1} / 5";
-        LblIndice.Text = lieu.Indice;
-        _tempsRestantSec = lieu.DureeSecondes;
-        AfficherTemps();
+            var lieu = _parcoursActuel[_etapeEnCours];
 
-        _isProcessing = false; // On autorise le scan
+            // Mise à jour UI
+            LblEtape.Text = $"Étape {_etapeEnCours + 1} / 5";
+            LblIndice.Text = lieu.Indice;
 
-        // Lancer Timer
-        if (_timer != null) _timer.Stop();
-        _timer = Dispatcher.CreateTimer();
-        _timer.Interval = TimeSpan.FromSeconds(1);
-        _timer.Tick += OnTimerTick;
-        _timer.Start();
+            // Réinitialiser le temps
+            _tempsRestantSec = lieu.DureeSecondes;
+            AfficherTemps();
+
+            // On débloque le scan
+            _isProcessing = false;
+            cameraView.IsDetecting = true;
+
+            // Gestion du Timer (On ne le recrée pas, on le redémarre juste)
+            if (_timer.IsRunning) _timer.Stop();
+            _timer.Start();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erreur LancerEtape : {ex.Message}");
+            // Si ça plante ici, on débloque quand même le procesing pour ne pas freezer
+            _isProcessing = false;
+        }
     }
 
     private void OnTimerTick(object sender, EventArgs e)
@@ -96,7 +120,7 @@ public partial class ChasseQR : ContentPage
 
         if (_tempsRestantSec <= 0)
         {
-            _timer.Stop();
+            _timer.Stop(); // On arrête le timer proprement
             GestionDefaite();
         }
     }
@@ -105,41 +129,37 @@ public partial class ChasseQR : ContentPage
     {
         TimeSpan t = TimeSpan.FromSeconds(_tempsRestantSec);
         LblTimer.Text = t.ToString(@"mm\:ss");
-
-        // Petit effet visuel : rouge si moins de 10s
         LblTimer.TextColor = _tempsRestantSec <= 10 ? Colors.Red : Colors.Black;
     }
 
-    // --- C'EST ICI QUE LA CAMÉRA PARLE ---
     private void CameraView_BarcodesDetected(object sender, BarcodeDetectionEventArgs e)
     {
-        if (_isProcessing) return; // On est déjà en train de traiter un scan
+        if (_isProcessing) return;
 
         var premierResultat = e.Results.FirstOrDefault();
         if (premierResultat == null) return;
 
         string codeScanne = premierResultat.Value;
+
+        // Sécurité anti-crash
+        if (_parcoursActuel == null || _etapeEnCours >= _parcoursActuel.Count) return;
         string codeAttendu = _parcoursActuel[_etapeEnCours].CodeSecret;
 
-        // IMPORTANT : Revenir sur le Thread Principal pour toucher à l'UI
         Dispatcher.Dispatch(async () =>
         {
+            // On vérifie une 2ème fois ici car le Dispatcher peut avoir du délai
+            if (_isProcessing) return;
+
             if (codeScanne == codeAttendu)
             {
-                _isProcessing = true; // Bloque les autres scans
-                _timer.Stop();
+                _isProcessing = true; // On bloque tout de suite
+                _timer.Stop();       // On arrête le timer
 
-                // Feedback succès (Vibration + Message)
                 try { HapticFeedback.Perform(HapticFeedbackType.LongPress); } catch { }
 
                 await DisplayAlert("Bravo !", "QR Code trouvé !", "Suivant");
 
                 PasserEtapeSuivante();
-            }
-            else
-            {
-                //Feedback erreur (optionnel, attention à ne pas spammer)
-                 Console.WriteLine($"Mauvais code : {codeScanne}");
             }
         });
     }
@@ -150,36 +170,53 @@ public partial class ChasseQR : ContentPage
 
         if (_etapeEnCours >= 5)
         {
-            // VICTOIRE FINALE
-            await DisplayAlert("VICTOIRE !", "Tu as terminé le parcours !", "Réclamer mes points");
-            // TODO: Envoyer les points à l'API ici
-             
-            ajoutspoint = new AjoutPoints(Utilisateur.utilisateur.Id, 50); // 100 points pour avoir fini
-            bool BB = await Apis.PostOneAsync("api/elies/mobile/addPoints",ajoutspoint);
-            if (BB== true)
+            // --- VICTOIRE ---
+            bool choix = await DisplayAlert("VICTOIRE !", "Tu as terminé le parcours !", "Réclamer mes points", "Annuler");
+            if (!choix) return;
+
+            try
             {
-                await DisplayAlert("", "Vos points ont bien été ajoutés à votre compte", "OK");
-                await Navigation.PopAsync();
+                // Vérifie que la classe Utilisateur existe et est connectée
+                // int userId = Utilisateur.utilisateur != null ? Utilisateur.utilisateur.Id : 1; 
+                int userId = 1; // ID temporaire pour tester si tu n'as pas de user connecté
+
+                var ajout = new AjoutPoints(userId, 50);
+
+                // Attention à bien retirer "/elies" si ton API ne l'attend pas
+                bool succes = await Apis.PostOneAsync("api/elies/mobile/addPoints", ajout);
+
+                if (succes)
+                {
+                    await DisplayAlert("Succès", "Points ajoutés !", "OK");
+                    await Navigation.PushAsync(new AcceuilEleve());
+                }
+                else
+                {
+                    await DisplayAlert("Erreur", "Erreur serveur lors de l'ajout.", "OK");
+                    await Navigation.PopAsync();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                await DisplayAlert("Erreur", "Une erreur est survenue lors de l'ajout des points", "OK");
-                await Navigation.PopAsync();
+                await DisplayAlert("Erreur", "Bug technique: " + ex.Message, "OK");
             }
-             // Retour accueil
+        }
+        else
+        {
+            // --- ETAPE SUIVANTE ---
+            LancerEtape();
         }
     }
 
     private void GestionDefaite()
     {
-        cameraView.IsDetecting = false; // On coupe la caméra
+        cameraView.IsDetecting = false;
         GameOverOverlay.IsVisible = true;
         try { Vibration.Vibrate(); } catch { }
     }
 
     private void OnRestartClicked(object sender, EventArgs e)
     {
-        // On recommence tout depuis le début
         DemarrerNouvellePartie();
     }
 }
