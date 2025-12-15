@@ -26,20 +26,20 @@
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
                     <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10">
                         <VerticalStackLayout>
-                            <Label Text="Equipes" TextColor="#2C3E50" FontSize="12"/>
-                            <Label x:Name="TeamsCountLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                            <Label Text="Total compétitions" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="TotalCompetitionsLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10" Grid.Column="1">
                         <VerticalStackLayout>
-                            <Label Text="Élèves" TextColor="#2C3E50" FontSize="12"/>
-                            <Label x:Name="StudentsCountLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                            <Label Text="En cours" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="InProgressCompetitionsLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </Frame>
                     <Frame BackgroundColor="#BDC3C7" Padding="12" HasShadow="False" CornerRadius="10" Grid.Column="2">
                         <VerticalStackLayout>
-                            <Label Text="Tournois actifs" TextColor="#2C3E50" FontSize="12"/>
-                            <Label x:Name="ActiveTournamentsLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
+                            <Label Text="À venir" TextColor="#2C3E50" FontSize="12"/>
+                            <Label x:Name="UpcomingCompetitionsLabel" Text="0" TextColor="#2C3E50" FontSize="24" FontAttributes="Bold"/>
                         </VerticalStackLayout>
                     </Frame>
                 </Grid>
@@ -64,10 +64,10 @@
                         <DataTemplate>
                             <Frame BackgroundColor="#FFFFFF" Padding="12" HasShadow="True" CornerRadius="10" Margin="0,0,0,10" BorderColor="#BDC3C7">
                                 <Grid ColumnDefinitions="Auto,*,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="12">
-                                    <Label Grid.RowSpan="3" Text="#" TextColor="#7F8C8D"/>
+                                    <Label Grid.RowSpan="3" Text="{Binding Id, StringFormat='#{0}'}" TextColor="#7F8C8D"/>
                                     <Label Grid.Column="1" Text="{Binding Nom}" TextColor="#2C3E50" FontAttributes="Bold"/>
-                                    <Label Grid.Row="1" Grid.Column="1" Text="Début : {Binding DateDeb}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
-                                    <Label Grid.Row="2" Grid.Column="1" Text="Fin : {Binding DateFin}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding DateDeb, StringFormat='Début : {0:dd/MM/yyyy}'}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding DateFin, StringFormat='Fin : {0:dd/MM/yyyy}'}" TextColor="#2C3E50" Opacity="0.7" FontSize="12"/>
                                     <Button Grid.RowSpan="3" Grid.Column="2"
                                             Text="Supprimer"
                                             BackgroundColor="#C0392B"
