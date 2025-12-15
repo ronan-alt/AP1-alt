@@ -1,0 +1,44 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Vues.QuizNohadPage"
+             BackgroundColor="#fafafa">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+
+        <!-- Question -->
+        <Label x:Name="LblQuestion"
+               FontSize="26"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               TextColor="Black" />
+
+        <!-- Chrono -->
+        <Label x:Name="LblTimer"
+               FontSize="22"
+               TextColor="Red"
+               HorizontalOptions="Center" />
+
+        <!-- Score -->
+        <Label x:Name="LblScore"
+               FontSize="20"
+               TextColor="Blue"
+               HorizontalOptions="Center"
+               Text="Score : 0" />
+
+        <!-- Réponses -->
+        <Button x:Name="BtnA" Clicked="OnChoiceClicked"
+                BackgroundColor="#6C63FF" TextColor="White" CornerRadius="15" />
+
+        <Button x:Name="BtnB" Clicked="OnChoiceClicked"
+                BackgroundColor="#4E89FF" TextColor="White" CornerRadius="15" />
+
+        <Button x:Name="BtnC" Clicked="OnChoiceClicked"
+                BackgroundColor="#49CC90" TextColor="White" CornerRadius="15" />
+
+        <Button x:Name="BtnD" Clicked="OnChoiceClicked"
+                BackgroundColor="#F76C6C" TextColor="White" CornerRadius="15" />
+
+    </VerticalStackLayout>
+
+</ContentPage>
+

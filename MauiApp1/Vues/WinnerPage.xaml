@@ -1,0 +1,55 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Vues.WinnerPage"
+             BackgroundColor="#F9F6FF">
+
+    <VerticalStackLayout Padding="30" Spacing="25" HorizontalOptions="Center">
+
+        <!-- Trophée -->
+        <Image Source="trophy.png"
+               WidthRequest="150"
+               HeightRequest="150"
+               HorizontalOptions="Center"/>
+
+        <!-- Titre -->
+        <Label Text="🏆 GAGNANT 🏆"
+               FontSize="32"
+               HorizontalOptions="Center"
+               FontAttributes="Bold"
+               TextColor="#6038FF"/>
+
+        <!-- Nom ou ID du gagnant -->
+        <Label x:Name="LblWinner"
+               Text="Joueur X"
+               FontSize="28"
+               TextColor="#333"
+               HorizontalOptions="Center"/>
+
+        <!-- Score -->
+        <Label x:Name="LblScore"
+               Text="Score : 000"
+               FontSize="22"
+               TextColor="#444"
+               HorizontalOptions="Center"/>
+
+        <!-- Bouton rejouer -->
+        <Button Text="🔁 Rejouer"
+                BackgroundColor="#6C63FF"
+                TextColor="White"
+                CornerRadius="20"
+                FontSize="20"
+                WidthRequest="200"
+                Clicked="OnReplayClicked"/>
+
+        <!-- Bouton retour -->
+        <Button Text="🏠 Retour Menu"
+                BackgroundColor="#FF6BA6"
+                TextColor="White"
+                CornerRadius="20"
+                FontSize="20"
+                WidthRequest="200"
+                Clicked="OnReturnClicked"/>
+
+    </VerticalStackLayout>
+
+</ContentPage>
