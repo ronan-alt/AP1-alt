@@ -17,6 +17,7 @@ namespace AP1.Modeles
         private bool _statut;
         private Equipe _laEquipe;
         private Apis _apis;
+        private bool _estAdmin;
         // Ajouts discrets pour refléter le JSON
         private string _userIdentifier;
         private List<string> _roles;
@@ -120,6 +121,9 @@ namespace AP1.Modeles
         [JsonProperty("Prenom")]
         public string Prenom { get => _prenom; set => _prenom = value; }
 
+        [JsonProperty("estAdmin")]
+        public bool EstAdmin { get => _estAdmin; set => _estAdmin = value; }
+
         [JsonProperty("userIdentifier")]
         public string UserIdentifier
         {
@@ -133,6 +137,7 @@ namespace AP1.Modeles
             get => _roles ??= new List<string>();
             set => _roles = value ?? new List<string>();
         }
+
 
         #endregion
 
