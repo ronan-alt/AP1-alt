@@ -37,14 +37,18 @@ public partial class AccueilCreeCompetition : ContentPage
         var payload = new CompetitionUpsertRequest
         {
             Nom = CompetitionNameEntry.Text!.Trim(),
-            DateDeb = StartDatePicker.Date,
-            DateFin = EndDatePicker.Date
+            DateDeb = StartDatePicker.Date.ToString("yyyy-MM-dd"),
+            DateFin = EndDatePicker.Date.ToString("yyyy-MM-dd")
         };
 
         SetLoading(true);
 
         try
         {
+            // DEBUG : ON VERIFIE ENCORE CE QU'ON ENVOIE
+            string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
+            await DisplayAlert("VERIFICATION JSON", jsonPayload, "ENVOYER");
+
             var response = await _apis.PostAsync<CompetitionUpsertRequest, CompetitionCreationResponse>("api/mobile/competitions", payload);
             
             if (response is null || !response.Success || response.Competition is null)

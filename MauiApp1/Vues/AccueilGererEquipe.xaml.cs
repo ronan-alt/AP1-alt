@@ -141,8 +141,8 @@ public partial class AccueilGererEquipe : ContentPage
         var payload = new CompetitionUpsertRequest
         {
             Nom = string.IsNullOrWhiteSpace(CompetitionNameEntry.Text) ? $"Compétition #{_competition.Id}" : CompetitionNameEntry.Text.Trim(),
-            DateDeb = StartDatePicker.Date,
-            DateFin = EndDatePicker.Date
+            DateDeb = StartDatePicker.Date.ToString("yyyy-MM-dd"),
+            DateFin = EndDatePicker.Date.ToString("yyyy-MM-dd"),
         };
 
         try

@@ -96,10 +96,10 @@ namespace AP1.Modeles
         public string Nom { get; set; } = string.Empty;
 
         [JsonProperty("dateDebut")]
-        public DateTime DateDeb { get; set; }
+        public string DateDeb { get; set; }
 
         [JsonProperty("dateFin")]
-        public DateTime DateFin { get; set; }
+        public string DateFin { get; set; }
 
         [JsonProperty("libelle")]
         public string Libelle => Nom;

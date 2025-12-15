@@ -61,6 +61,7 @@ public partial class PageJeuPrototype : ContentPage
     private int _currentIndex = 0;
     private int _score = 0;
     private int _lieuId = 0; // Pour savoir quel lieu on cherche
+    private string _lastError = ""; // DEBUG: Pour voir l'erreur
 
     public PageJeuPrototype()
     {
@@ -93,6 +94,12 @@ public partial class PageJeuPrototype : ContentPage
                     // On récupère l'ID du lieu de la première question (supposons qu'elles portent sur le même lieu ou un lieu au hasard)
                     if (_lieuId == 0) _lieuId = q.Lieu_id;
                 }
+
+                // MÉLANGE ET SÉLECTION DE 5 QUESTIONS AU HASARD
+                if (_questions.Count > 5)
+                {
+                    _questions = _questions.OrderBy(x => Guid.NewGuid()).Take(5).ToList();
+                }
             }
             else
             {
@@ -117,6 +124,7 @@ public partial class PageJeuPrototype : ContentPage
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine($"Erreur API Jeu : {ex.Message}");
+            _lastError = ex.Message; // On capture l'erreur
             // Si erreur, on charge les questions de secours (en dur)
             LoadFallbackQuestions();
         }
@@ -133,7 +141,7 @@ public partial class PageJeuPrototype : ContentPage
         // Banque de secours si l'API ne marche pas
         _questions = new List<Question>
         {
-            new Question { Text = "Capitale de la France ? (Mode Hors Ligne)", Answers = new List<ApiReponse> { 
+            new Question { Text = string.IsNullOrEmpty(_lastError) ? "Capitale de la France ? (Hors Ligne)" : $"ERREUR API : {_lastError}", Answers = new List<ApiReponse> { 
                 new ApiReponse { Libelle = "Paris", Est_correcte = true },
                 new ApiReponse { Libelle = "Lyon", Est_correcte = false },
                 new ApiReponse { Libelle = "Marseille", Est_correcte = false },

@@ -14,6 +14,7 @@ public partial class AccueilProfesseur : ContentPage
 {
     private readonly Apis Apis = new Apis();
     private ObservableCollection<Competition> _competitions = new ObservableCollection<Competition>();
+    private bool _isLoading = false;
     private Competition? _selectedCompetition;
     private CompetitionListResponse? _lastSnapshot;
     
@@ -45,117 +46,72 @@ public partial class AccueilProfesseur : ContentPage
 
     private async Task LoadDataAsync()
     {
-        SetLoading(true);
-        ErrorLabel.IsVisible = false;
+        if (_isLoading) return;
+        _isLoading = true;
+        LoadingIndicator.IsRunning = true;
+        LoadingIndicator.IsVisible = true;
+
         try
         {
-            var response = await Apis.GetSingleAsync<CompetitionListResponse>("api/mobile/competitions");
+            // 1. Récupération "Magique" (dynamic) pour contourner les problèmes de type
+            dynamic result = await Apis.GetSingleAsync<CompetitionListResponse>("api/mobile/competitions");
             
-            if (response?.Competitions != null)
+            // 2. On essaie de récupérer la liste, peu importe la structure retournée
+            List<Competition> loadedCompetitions = new List<Competition>();
+
+            try 
             {
-                foreach (var c in response.Competitions)
+                // Cas 1 : C'est directement l'objet
+                if (result != null && result.Competitions != null)
                 {
-                    c.FixNameFromExtraData();
-                    
-                    if (CompetitionNames.ContainsKey(c.Id))
-                    {
-                        c.Nom = CompetitionNames[c.Id];
-                    }
+                    loadedCompetitions = result.Competitions;
                 }
             }
-
-            _lastSnapshot = response;
-            MergeLoadedCompetitions(response?.Competitions);
-            ApplyCounters(response);
-        }
-        catch (Exception)
-        {
-            var offline = new List<Competition>
+            catch
             {
-                new() { Id = 1, Nom = "Compétition (offline) 1", DateDeb = DateTime.Today, DateFin = DateTime.Today.AddDays(1) },
-                new() { Id = 2, Nom = "Compétition (offline) 2", DateDeb = DateTime.Today.AddDays(2), DateFin = DateTime.Today.AddDays(4) }
-            };
-            MergeLoadedCompetitions(offline);
-            ApplyCounters();
-            ErrorLabel.Text = "Mode déconnecté : données de test affichées.";
-            ErrorLabel.IsVisible = true;
+                // Cas 2 : C'est une liste (fallback)
+                try
+                {
+                     var list = (IEnumerable<dynamic>)result;
+                     var first = list?.FirstOrDefault();
+                     if (first != null && first.Competitions != null)
+                     {
+                         loadedCompetitions = first.Competitions;
+                     }
+                }
+                catch { /* Perdu */ }
+            }
+            
+            // 3. Mise à jour de l'interface (On vide et on remplit)
+            _competitions.Clear();
+            
+            foreach (var comp in loadedCompetitions)
+            {
+                // Petit fix pour le nom si manquant
+                comp.FixNameFromExtraData();
+
+                // Si on a le nom en mémoire (créé récemment), on l'utilise
+                if ((string.IsNullOrEmpty(comp.Nom) || comp.Nom.StartsWith("Compétition #")) 
+                    && CompetitionNames.ContainsKey(comp.Id))
+                {
+                    comp.Nom = CompetitionNames[comp.Id];
+                }
+
+                _competitions.Add(comp);
+            }
+
+            // Gestion de l'affichage vide/plein via le CollectionView automatique
+            CompetitionsCollection.IsVisible = true;
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Erreur", "Impossible de charger les compétitions : " + ex.Message, "OK");
         }
         finally
         {
-            SetLoading(false);
-        }
-    }
-
-    private void MergeLoadedCompetitions(IEnumerable<Competition>? loaded)
-    {
-        if (loaded is null) return;
-        var loadedById = loaded.ToDictionary(c => c.Id, c => c);
-
-        for (int i = 0; i < _competitions.Count; i++)
-        {
-            var existing = _competitions[i];
-            if (loadedById.TryGetValue(existing.Id, out var fromApi))
-            {
-               
-                _competitions[i] = fromApi;
-            }
-        }
-
-        var existingIds = new HashSet<int>(_competitions.Select(c => c.Id));
-        foreach (var comp in loaded)
-        {
-            if (!existingIds.Contains(comp.Id))
-            {
-                
-                if (string.IsNullOrWhiteSpace(comp.Nom) || comp.Nom.StartsWith("Compétition #"))
-                {
-                    Task.Run(async () => await FetchCompetitionDetails(comp));
-                }
-                _competitions.Add(comp);
-            }
-        }
-    }
-
-    private async Task FetchCompetitionDetails(Competition comp)
-    {
-        try
-        {
-           
-            var details = await Apis.GetSingleAsync<CompetitionTeamsResponse>($"api/mobile/competitions/{comp.Id}/teams");
-            
-            string? newName = null;
-
-            if (details?.Competition != null)
-            {
-        
-                details.Competition.FixNameFromExtraData();
-                newName = details.Competition.Nom;
-            }
-
-            
-            if (string.IsNullOrWhiteSpace(newName) || newName.Contains("(Nom manquant)"))
-            {
-                newName = $"Compétition #{comp.Id} (Non chargée)";
-            }
-
-            
-            MainThread.BeginInvokeOnMainThread(() =>
-            {
-                comp.Nom = newName;
-                
-                var index = _competitions.IndexOf(comp);
-                if (index >= 0) _competitions[index] = comp;
-            });
-        }
-        catch
-        {
-            
-             MainThread.BeginInvokeOnMainThread(() =>
-            {
-                comp.Nom = $"Compétition #{comp.Id} (Err. Réseau)";
-                var index = _competitions.IndexOf(comp);
-                if (index >= 0) _competitions[index] = comp;
-            });
+            _isLoading = false;
+            LoadingIndicator.IsRunning = false;
+            LoadingIndicator.IsVisible = false;
         }
     }
 
