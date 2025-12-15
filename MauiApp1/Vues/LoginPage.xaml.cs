@@ -23,7 +23,7 @@ public partial class LoginPage : ContentPage
     {
         var email = EmailEntry.Text;
         var password = PasswordEntry.Text;
-        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        if (string.IsNullOrWhiteSpace(email)  string.IsNullOrWhiteSpace(password))
         {
             await DisplayAlert("Erreur", "Veuillez entrer votre email et mot de passe.", "OK");
             return;
@@ -40,11 +40,14 @@ public partial class LoginPage : ContentPage
             else
             {
                 Utilisateur.utilisateur = BB;
-                if (BB.EstAdmin == true)
+                if (BB.Roles != null && (BB.Roles.Contains("ROLE_PROFESSEUR")  BB.Roles.Contains("ROLE_ADMIN")))
                 {
                     await Navigation.PushAsync(new AccueilProfesseur());
                 }
-                else { await Navigation.PushAsync(new AcceuilEleve()); } 
+                else
+                {
+                    await Navigation.PushAsync(new AcceuilEleve());
+                }
             }
 
         }
