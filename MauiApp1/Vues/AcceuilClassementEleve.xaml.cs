@@ -12,9 +12,12 @@ namespace AP1.Vues;
 public partial class AcceuilClassementEleve : ContentPage
 {   private ObservableCollection<Equipe> teams;
     private readonly Apis Apis = new Apis();
+
+    public ObservableCollection<ClassementObjet> ClassementObjets { get; set; }
     public AcceuilClassementEleve()
 	{
         InitializeComponent();
+<<<<<<< Updated upstream
         OnAppearing();
     }
     protected override async void OnAppearing()
@@ -27,6 +30,10 @@ public partial class AcceuilClassementEleve : ContentPage
         teams = new ObservableCollection<Equipe>(sortedTeams);
         ClassementCollectionView.ItemsSource = teams;
     }
+=======
+        Load
+	}
+>>>>>>> Stashed changes
     private async void OnRetourClicked(object sender, EventArgs e)
     {
         await Navigation.PopAsync();

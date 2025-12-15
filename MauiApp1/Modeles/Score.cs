@@ -10,6 +10,7 @@ namespace AP1.Modeles
     {
         #region propriete
         private int _id;
+        private int _valeur;
         private Equipe _leEquipe;
         private Competition _laCompetition;
         private Jeu _lejeu;
@@ -20,6 +21,8 @@ namespace AP1.Modeles
         #endregion
         #region getter/setter
         public int Id { get => _id; set => _id = value; }
+
+        public int Valeur { get => _valeur; set => _valeur = value; }
         public Equipe LeEquipe { get => _leEquipe; set => _leEquipe = value; }
         public Competition LaCompetition { get => _laCompetition; set => _laCompetition = value; }
         public Jeu Lejeu { get => _lejeu; set => _lejeu = value; }
