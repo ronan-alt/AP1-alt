@@ -57,12 +57,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Vues\JEU1.xaml.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Remove="Vues\JEU1.xaml" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="IppDotNetSdkForQuickBooksApiV3" Version="14.7.0.1" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
 		<PackageReference Include="Microsoft.SqlServer.SqlManagementObjects" Version="172.76.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="ZXing.Net.Maui.Controls" Version="0.4.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -85,6 +94,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Vues\AccueilProfesseur.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Vues\ChasseQR.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Vues\ForgotPassword.xaml">

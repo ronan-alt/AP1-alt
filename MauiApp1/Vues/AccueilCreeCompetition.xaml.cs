@@ -1,18 +1,20 @@
-using System.Runtime.InteropServices;
-using Microsoft.Maui.ApplicationModel;
+using System;
 using AP1.Modeles;
+using AP1.Services;
 
 namespace MauiApp1.Vues;
 
 public partial class AccueilCreeCompetition : ContentPage
 {
-	public AccueilCreeCompetition()
-	{
-		InitializeComponent();
+    private readonly Apis _apis = new();
+
+    public AccueilCreeCompetition()
+    {
+        InitializeComponent();
         StartDatePicker.Date = DateTime.Today;
         EndDatePicker.Date = DateTime.Today.AddDays(7);
-        StatusPicker.SelectedIndex = 0; 
-	}
+        StatusPicker.SelectedIndex = 0;
+    }
 
     private async void OnBackClicked(object sender, EventArgs e)
     {
@@ -26,39 +28,54 @@ public partial class AccueilCreeCompetition : ContentPage
 
     private async void OnCreateClicked(object sender, EventArgs e)
     {
-       
-        LoadingIndicator.IsVisible = true;
-        LoadingIndicator.IsRunning = true;
-        ErrorLabel.IsVisible = false;
-        ErrorLabel.Text = string.Empty;
+        if (!ValidatePayload(out var message))
+        {
+            await DisplayAlert("Formulaire incomplet", message, "OK");
+            return;
+        }
+
+        var payload = new CompetitionUpsertRequest
+        {
+            Nom = CompetitionNameEntry.Text!.Trim(),
+            DateDeb = StartDatePicker.Date.ToString("yyyy-MM-dd"),
+            DateFin = EndDatePicker.Date.ToString("yyyy-MM-dd")
+        };
+
+        SetLoading(true);
+
         try
         {
-            await Task.Delay(300); 
-            var comp = new Competition
-            {
-                Id = new Random().Next(1000, 9999),
-                Nom = string.IsNullOrWhiteSpace(CompetitionNameEntry.Text) ? "Nouvelle compétition" : CompetitionNameEntry.Text.Trim(),
-                DateDeb = StartDatePicker.Date,
-                DateFin = EndDatePicker.Date
-            };
-            MessagingCenter.Send(this, "CompetitionCreated", comp);
+            // DEBUG : ON VERIFIE ENCORE CE QU'ON ENVOIE
+            string jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload, Newtonsoft.Json.Formatting.Indented);
+            await DisplayAlert("VERIFICATION JSON", jsonPayload, "ENVOYER");
 
+            var response = await _apis.PostAsync<CompetitionUpsertRequest, CompetitionCreationResponse>("api/mobile/competitions", payload);
             
-            await DisplayAlert("Créée", $"\"{comp.Nom}\" a été créée.", "OK");
+            if (response is null || !response.Success || response.Competition is null)
+            {
+                throw new InvalidOperationException("Échec de la création (réponse invalide).");
+            }
 
-           
+            var created = response.Competition;
+
+            if (string.IsNullOrWhiteSpace(created.Nom))
+            {
+                 created.Nom = CompetitionNameEntry.Text!.Trim();
+            }
+
+            MessagingCenter.Send(this, "CompetitionCreated", created);
+            
+            await DisplayAlert("Succès", $"La compétition \"{created.Nom}\" a été créée.", "OK");
             await Navigation.PopToRootAsync();
         }
         catch (Exception ex)
         {
-          
             ErrorLabel.Text = $"Erreur lors de la création: {ex.Message}";
             ErrorLabel.IsVisible = true;
         }
         finally
         {
-            LoadingIndicator.IsRunning = false;
-            LoadingIndicator.IsVisible = false;
+            SetLoading(false);
         }
     }
 
@@ -68,6 +85,38 @@ public partial class AccueilCreeCompetition : ContentPage
         if (confirm)
         {
             await Navigation.PopAsync();
+        }
+    }
+
+    private bool ValidatePayload(out string message)
+    {
+        var name = CompetitionNameEntry.Text?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            message = "Veuillez saisir un nom de compétition.";
+            return false;
+        }
+
+        if (EndDatePicker.Date <= StartDatePicker.Date)
+        {
+            message = "La date de fin doit être postérieure à la date de début.";
+            return false;
+        }
+
+        message = string.Empty;
+        return true;
+    }
+
+    private void SetLoading(bool isLoading)
+    {
+        LoadingIndicator.IsVisible = isLoading;
+        LoadingIndicator.IsRunning = isLoading;
+        CreateButton.IsEnabled = !isLoading;
+        CancelButton.IsEnabled = !isLoading;
+        if (isLoading)
+        {
+            ErrorLabel.IsVisible = false;
+            ErrorLabel.Text = string.Empty;
         }
     }
 }

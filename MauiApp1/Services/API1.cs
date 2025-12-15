@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
@@ -32,7 +33,7 @@ namespace AP1.Services
                 DateParseHandling = DateParseHandling.DateTime,
                 NullValueHandling = NullValueHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
-                Converters = { new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" } }
+                Converters = { new IsoDateTimeConverter { DateTimeFormat = "yyyy-MM-ddTHH:mm:ssK" } }
             };
         }
 
@@ -58,8 +59,24 @@ namespace AP1.Services
             catch (Exception ex)
             {
                 // Log minimal (à remplacer par ton logger)
-                System.Diagnostics.Debug.WriteLine($"[GetAllAsync] {url} -> {ex.Message}");
+                Debug.WriteLine($"[GetAllAsync] {url} -> {ex.Message}");
                 throw; // on propage pour que l'appelant décide
+            }
+        }
+
+        public async Task<T?> GetSingleAsync<T>(string url, CancellationToken ct = default)
+        {
+            try
+            {
+                using var resp = await _httpClient.GetAsync(url, ct);
+                await EnsureSuccess(resp, url);
+                var json = await resp.Content.ReadAsStringAsync(ct);
+                return JsonConvert.DeserializeObject<T>(json, _jsonSettings);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[GetSingleAsync] {url} -> {ex.Message}");
+                throw;
             }
         }
 
@@ -77,8 +94,28 @@ namespace AP1.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[PostOneAsync] {endpoint} -> {ex.Message}");
+                Debug.WriteLine($"[PostOneAsync] {endpoint} -> {ex.Message}");
                 return false; // tu avais ce contrat, on le conserve
+            }
+        }
+
+        public async Task<TResponse?> PostAsync<TRequest, TResponse>(string endpoint, TRequest requestDataObj, CancellationToken ct = default)
+        {
+            try
+            {
+                var payload = JsonConvert.SerializeObject(requestDataObj, _jsonSettings);
+                using var content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+                using var resp = await _httpClient.PostAsync(endpoint, content, ct);
+                await EnsureSuccess(resp, endpoint, payload);
+
+                var json = await resp.Content.ReadAsStringAsync(ct);
+                return JsonConvert.DeserializeObject<TResponse>(json, _jsonSettings);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[PostAsync] {endpoint} -> {ex.Message}");
+                throw;
             }
         }
 
@@ -99,8 +136,42 @@ namespace AP1.Services
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[GetOneAsync] {endpoint} -> {ex.Message}");
+                Debug.WriteLine($"[GetOneAsync] {endpoint} -> {ex.Message}");
                 return default;
+            }
+        }
+
+        public async Task<TResponse?> PutAsync<TRequest, TResponse>(string endpoint, TRequest requestDataObj, CancellationToken ct = default)
+        {
+            try
+            {
+                var payload = JsonConvert.SerializeObject(requestDataObj, _jsonSettings);
+                using var content = new StringContent(payload, Encoding.UTF8, "application/json");
+
+                using var resp = await _httpClient.PutAsync(endpoint, content, ct);
+                await EnsureSuccess(resp, endpoint, payload);
+
+                var json = await resp.Content.ReadAsStringAsync(ct);
+                return JsonConvert.DeserializeObject<TResponse>(json, _jsonSettings);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[PutAsync] {endpoint} -> {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(string endpoint, CancellationToken ct = default)
+        {
+            try
+            {
+                using var resp = await _httpClient.DeleteAsync(endpoint, ct);
+                await EnsureSuccess(resp, endpoint);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[DeleteAsync] {endpoint} -> {ex.Message}");
+                throw;
             }
         }
 

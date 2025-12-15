@@ -8,8 +8,13 @@ namespace MauiApp1
         public App()
         {
             InitializeComponent();
+<<<<<<< HEAD
             MainPage = new NavigationPage(new QuizNohadPage());
         }
+=======
+            MainPage = new NavigationPage(new AccueilProfesseur());
+        }       
+>>>>>>> main
 
     }
 
