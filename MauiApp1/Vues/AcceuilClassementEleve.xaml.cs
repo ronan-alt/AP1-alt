@@ -19,6 +19,7 @@ public partial class AcceuilClassementEleve : ContentPage
         InitializeComponent();
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         OnAppearing();
     }
     protected override async void OnAppearing()
@@ -32,6 +33,8 @@ public partial class AcceuilClassementEleve : ContentPage
         ClassementCollectionView.ItemsSource = teams;
     }
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         Load
